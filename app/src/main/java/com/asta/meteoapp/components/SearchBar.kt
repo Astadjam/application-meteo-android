@@ -44,10 +44,8 @@ fun searchBarPreview(){
         inputState = input,
         onValueChange = {
             input.value = it
-
         },
         onClick = {
-
         }
 
     )
