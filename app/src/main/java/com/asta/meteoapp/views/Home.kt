@@ -1,5 +1,6 @@
 package com.asta.meteoapp.views
 
+import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -25,7 +26,7 @@ import com.asta.meteoapp.components.weatherDataFavorite
 import com.asta.meteoapp.model.HomeModel
 
 @Composable
-fun Home(modifier: Modifier=Modifier, homeModel: HomeModel = viewModel()){
+fun Home(modifier: Modifier=Modifier, homeModel: HomeModel = viewModel(), context: Context= LocalContext.current){
     var input = homeModel.getInput()
     var weatherList = homeModel.getWeatherList()
     var weatherFavoriteList = homeModel.getWeatherFavoriteList()
@@ -36,6 +37,7 @@ fun Home(modifier: Modifier=Modifier, homeModel: HomeModel = viewModel()){
             inputState = input,
             onValueChange = {
                 input.value = it
+                homeModel.searchFromInput(it, context)
             },
             onClick = {
             }
