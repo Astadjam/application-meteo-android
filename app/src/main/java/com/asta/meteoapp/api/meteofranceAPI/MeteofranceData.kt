@@ -1,5 +1,7 @@
 package com.asta.meteoapp.api.meteofranceAPI
 
+import com.asta.meteoapp.datacontracts.WeatherData
+
 /**
  * @brief open weather dto
  */
@@ -10,7 +12,18 @@ data class MeteofranceData(
     val daily_units: DailyUnits,
     val current: Current,
     val daily: Daily
-)
+){
+    fun convertToWeatherData() = WeatherData(
+        city = null,
+        temperature = current.temperature_2m,
+        temperatureUnit = current_units.temperature_2m,
+        country = null,
+        maxTemperature = daily.temperature_2m_max[0],
+        minTemperature = daily.temperature_2m_min[0],
+        windSpeed = current.wind_speed_10m,
+        weatherCode = current.weather_code
+    )
+}
 
 /**
  * @brief open weather current units

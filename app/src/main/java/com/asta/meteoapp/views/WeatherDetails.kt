@@ -23,7 +23,7 @@ fun WeatherDetails(modifier: Modifier=Modifier, weatherdata: WeatherData, isFavo
     Column(modifier){
         Row(modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween) {
-            Text(weatherdata.city)
+            Text(weatherdata.city ?: "")
             IconButton(onClick = {
                 isFavorite.value = !isFavorite.value
             }) {
@@ -41,7 +41,10 @@ fun WeatherDetails(modifier: Modifier=Modifier, weatherdata: WeatherData, isFavo
 fun WeatherDetailsPreview(){
     var isFavorite = remember {mutableStateOf(true)}
     WeatherDetails(
-        weatherdata = WeatherData("Ajaccio"),
+        weatherdata = WeatherData("Corte",
+            13.0,
+            "","",13.0,13.0,13.0,1
+        ),
         isFavorite = isFavorite
     )
 }

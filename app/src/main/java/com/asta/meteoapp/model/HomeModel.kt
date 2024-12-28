@@ -22,21 +22,40 @@ class HomeModel: ViewModel() {
     fun getWeatherFavoriteList() = this.weatherFavoriteList
 
     fun searchFromInput(input: String, context: Context){
+        weatherList.clear()
         task?.cancel()
         task = viewModelScope.launch {
             delay(300)
             try {
                 var resultsSearchFromInput = com.asta.meteoapp.api.geocodingAPI.createRetrofit(context).getLocationData(input)
+
+                if(resultsSearchFromInput !== null){
+                    var instanceOfInterface = com.asta.meteoapp.api.meteofranceAPI.createRetrofit(context)
+                    var resultWeatherDataList = resultsSearchFromInput.results.mapNotNull {
+                        var weatherData = instanceOfInterface.getWeather(it.longitude, it.latitude)?.convertToWeatherData()
+
+                        weatherData?.city=it.name
+                        weatherData?.country=it.country
+
+                        weatherData
+                    }
+
+                    weatherList.addAll(resultWeatherDataList)
+                }
             }catch (_:Exception){}
         }
     }
 
     fun searchFromGeolocation(longitude: Double, latitude: Double, context: Context){
+        weatherList.clear()
         task?.cancel()
         task = viewModelScope.launch {
             delay(300)
             try {
-                Log.d("Hello", com.asta.meteoapp.api.meteofranceAPI.createRetrofit(context).getWeather(longitude, latitude).toString())
+                var weatherData = com.asta.meteoapp.api.meteofranceAPI.createRetrofit(context).getWeather(longitude, latitude)
+                if(weatherData !== null){
+                    weatherList.add(weatherData.convertToWeatherData())
+                }
             }catch (e:Exception){
                 Log.d("Hello",e.toString())
             }
