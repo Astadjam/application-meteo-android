@@ -1,6 +1,7 @@
 package com.asta.meteoapp.views
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -46,8 +47,13 @@ fun Home(modifier: Modifier=Modifier, homeModel: HomeModel = viewModel(), contex
             modifier = Modifier,
             context = LocalContext.current,
             onLocationGet = {location ->
+                Log.d("Hello", location?.toString() ?: "null")
+                if(location !== null){
+                    homeModel.searchFromGeolocation(location.longitude, location.latitude, context)
+                }
             },
             onDeny = {
+                Log.d("Hello", "erreur")
             }
         )
 
