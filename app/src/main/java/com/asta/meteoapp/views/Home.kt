@@ -19,14 +19,16 @@ import com.asta.meteoapp.datacontracts.WeatherData
 import androidx.compose.foundation.lazy.items
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.asta.meteoapp.components.weatherData
 import com.asta.meteoapp.components.weatherDataFavorite
+import com.asta.meteoapp.model.HomeModel
 
 @Composable
-fun Home(modifier: Modifier=Modifier){
-    var input = remember { mutableStateOf("") }
-    var weatherList = remember { mutableStateListOf<WeatherData>(WeatherData("Corte"), WeatherData("Corte")) }
-    var weatherFavoriteList = remember { mutableStateListOf<WeatherData>(WeatherData("Corte"), WeatherData("Corte")) }
+fun Home(modifier: Modifier=Modifier, homeModel: HomeModel = viewModel()){
+    var input = homeModel.getInput()
+    var weatherList = homeModel.getWeatherList()
+    var weatherFavoriteList = homeModel.getWeatherFavoriteList()
     Column(modifier,
             verticalArrangement = Arrangement.spacedBy(20.dp),
             horizontalAlignment = Alignment.CenterHorizontally) {

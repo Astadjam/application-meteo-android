@@ -11,12 +11,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.asta.meteoapp.components.weatherDataFavorite
 import com.asta.meteoapp.datacontracts.WeatherData
+import com.asta.meteoapp.model.FavoriteModel
 
 @Composable
-fun FavoritePage(modifier: Modifier=Modifier){
-    var weatherFavoriteList = remember { mutableStateListOf<WeatherData>(WeatherData("Corte"), WeatherData("Corte")) }
+fun FavoritePage(modifier: Modifier=Modifier, favoriteModel: FavoriteModel= viewModel()){
+    var weatherFavoriteList = favoriteModel.getWeatherFavoriteList()
     Column(modifier) {
         Text("Vos favoris")
         LazyColumn {

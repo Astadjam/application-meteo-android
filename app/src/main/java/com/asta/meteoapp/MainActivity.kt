@@ -31,6 +31,8 @@ class MainActivity : ComponentActivity() {
                     AppNavigationBar(navHostController= navHostController)
                 }){
                     PageList(navController = navHostController, modifier = Modifier.padding(it))
+
+
                 }
             }
         }
