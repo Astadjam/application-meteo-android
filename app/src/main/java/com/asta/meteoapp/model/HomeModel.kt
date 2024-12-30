@@ -2,6 +2,8 @@ package com.asta.meteoapp.model
 
 import android.content.Context
 import android.util.Log
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -20,10 +22,12 @@ class HomeModel: ViewModel() {
     private var task: Job? = null
     private var geocodingRequests: GeocodingRequests?=null
     private var meteofranceRequests: MeteofranceRequests?=null
+    private var message: MutableState<String?> = mutableStateOf(null)
 
     fun getInput() = this.input
     fun getWeatherList() = this.weatherList
     fun getWeatherFavoriteList() = this.weatherFavoriteList
+    fun getMessage() = this.message
 
     fun searchFromInput(input: String, context: Context){
         try {
@@ -36,7 +40,7 @@ class HomeModel: ViewModel() {
             weatherList.clear()
             task?.cancel()
             task = viewModelScope.launch {
-                delay(300)
+                delay(1000)
                 try {
                     var resultsSearchFromInput = geocodingRequests!!.getLocationData(input)
 
@@ -53,12 +57,12 @@ class HomeModel: ViewModel() {
                         weatherList.addAll(resultWeatherDataList)
                     }
                 }catch (e:Exception){
-                    Log.d("Mon erreur", e.toString())
+                    message.value = "Erreur reseau!"
                 }
             }
 
         }catch (e:Exception){
-            Log.d("Mon erreur", e.toString())
+            message.value = "Une erreur interne s'est produite, veuillez réessayer!"
         }
 
     }
@@ -78,13 +82,13 @@ class HomeModel: ViewModel() {
                         weatherList.add(weatherData.convertToWeatherData())
                     }
                 }catch (e:Exception){
-                    Log.d("Mon erreur", "${e.toString()} - ${longitude} ${latitude}")
+                    message.value = "Erreur reseau!"
                 }
             }
 
         }catch (e: Exception){
 
-            Log.d("Mon erreur", "${e.toString()} - ${longitude} ${latitude}")
+            message.value = "Une erreur interne s'est produite, veuillez réessayer!"
         }
     }
 }

@@ -23,6 +23,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.asta.meteoapp.components.ErrorMessage
 import com.asta.meteoapp.components.weatherData
 import com.asta.meteoapp.components.weatherDataFavorite
 import com.asta.meteoapp.model.DetailsModel
@@ -33,6 +34,7 @@ fun Home(modifier: Modifier=Modifier, homeModel: HomeModel = viewModel(), detail
     var input = homeModel.getInput()
     var weatherList = homeModel.getWeatherList()
     var weatherFavoriteList = homeModel.getWeatherFavoriteList()
+    var message = homeModel.getMessage()
     Column(modifier,
             verticalArrangement = Arrangement.spacedBy(20.dp),
             horizontalAlignment = Alignment.CenterHorizontally) {
@@ -58,6 +60,8 @@ fun Home(modifier: Modifier=Modifier, homeModel: HomeModel = viewModel(), detail
                 Log.d("Hello", "erreur")
             }
         )
+
+        ErrorMessage(message)
 
         if(weatherList.isNotEmpty()){
             Text("Résultats")
