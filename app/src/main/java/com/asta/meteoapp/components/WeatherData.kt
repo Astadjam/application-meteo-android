@@ -20,7 +20,7 @@ fun weatherData(modifier: Modifier=Modifier, weatherData: WeatherData){
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Text(text=weatherData.city ?: "")
+        Text(text="${weatherData.city ?: "Votre position"} ${weatherData.country ?: ""}" )
         Icon(imageVector = Icons.Filled.Info, contentDescription = "")
     }
 }
@@ -32,7 +32,7 @@ fun weatherDataPreview(){
         modifier = Modifier.width(300.dp),
         weatherData = WeatherData("Corte",
             13.0,
-            "","",13.0,13.0,13.0,1
+            "","",13.0,13.0,13.0,"", weatherCode = 1
         )
     )
 }

@@ -10,20 +10,21 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import com.asta.meteoapp.datacontracts.WeatherData
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.asta.meteoapp.datacontracts.findDescriptionFromWeatherCode
+import com.asta.meteoapp.model.DetailsModel
 
 @Composable
-fun WeatherDetails(modifier: Modifier=Modifier, weatherdata: WeatherData, isFavorite: MutableState<Boolean>){
+fun WeatherDetails(modifier: Modifier=Modifier, detailsModel: DetailsModel= viewModel()){
+    var weatherData = detailsModel.weatherData!!
+    var isFavorite = detailsModel.isFavorite
     Column(modifier){
         Row(modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween) {
-            Text(weatherdata.city ?: "")
+            Text(text="${weatherData.city ?: "Votre position"} ${weatherData.country ?: ""}" )
             IconButton(onClick = {
                 isFavorite.value = !isFavorite.value
             }) {
@@ -33,18 +34,17 @@ fun WeatherDetails(modifier: Modifier=Modifier, weatherdata: WeatherData, isFavo
                     Icon(imageVector = Icons.Filled.Favorite, contentDescription = "", tint = Color.Red)
             }
         }
+        Text("Temperature actuelle : " + weatherData.temperature + weatherData.temperatureUnit)
+        Text("Conditions météorologiques : " + findDescriptionFromWeatherCode(weatherData.weatherCode))
+        Text("Temperature maximale de la journée : " + weatherData.maxTemperature + weatherData.temperatureUnit)
+        Text("Temperature minimale de la journée : " + weatherData.minTemperature + weatherData.temperatureUnit)
+        Text("Vitesse du vent : " + weatherData.windSpeed + weatherData.windSpeedUnit)
     }
 }
 
 @Composable
 @Preview
 fun WeatherDetailsPreview(){
-    var isFavorite = remember {mutableStateOf(true)}
     WeatherDetails(
-        weatherdata = WeatherData("Corte",
-            13.0,
-            "","",13.0,13.0,13.0,1
-        ),
-        isFavorite = isFavorite
     )
 }

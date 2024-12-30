@@ -29,7 +29,7 @@ fun weatherDataFavorite(modifier: Modifier=Modifier,
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Text(text=weatherData.city ?: "")
+        Text(text=weatherData.city ?: "Votre position")
         IconButton(onClick = onClick) {
             if(isInfavorite.value)
                 Icon(imageVector = Icons.Filled.Favorite, contentDescription = "", tint = Color.Red)
@@ -47,7 +47,7 @@ fun weatherDataFavoritePreview(){
         modifier = Modifier.width(300.dp),
         weatherData = WeatherData("Corte",
             13.0,
-            "","",13.0,13.0,13.0,1
+            "","",13.0,13.0,13.0,"", weatherCode = 1
         ),
         isInfavorite = value,
         onClick = {

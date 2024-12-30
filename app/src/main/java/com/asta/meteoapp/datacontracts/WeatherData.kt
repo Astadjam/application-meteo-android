@@ -9,5 +9,43 @@ data class WeatherData(
     var maxTemperature: Double?,
     var minTemperature: Double?,
     var windSpeed: Double,
-    var weatherCode: Int
-)
+    var windSpeedUnit: String,
+    var weatherCode: Int)
+
+    /**
+     * @return the description from weather code
+     * @attention i used chatgpt to generate the map from open meteo documentation
+     */
+    fun findDescriptionFromWeatherCode(code: Int): String {
+    val weatherDescriptionMap = mapOf(
+        "0" to "Ciel clair",
+        "1" to "Principalement clair",
+        "2" to "Partiellement nuageux",
+        "3" to "Couvert",
+        "45" to "Brouillard",
+        "48" to "Brouillard givrant",
+        "51" to "Bruine légère",
+        "53" to "Bruine modérée",
+        "55" to "Bruine forte",
+        "56" to "Bruine verglaçante légère",
+        "57" to "Bruine verglaçante forte",
+        "61" to "Pluie faible",
+        "63" to "Pluie modérée",
+        "65" to "Pluie forte",
+        "66" to "Pluie verglaçante légère",
+        "67" to "Pluie verglaçante forte",
+        "71" to "Chute de neige faible",
+        "73" to "Chute de neige modérée",
+        "75" to "Chute de neige forte",
+        "77" to "Grains de neige",
+        "80" to "Averses de pluie faibles",
+        "81" to "Averses de pluie modérées",
+        "82" to "Averses de pluie violentes",
+        "85" to "Averses de neige faibles",
+        "86" to "Averses de neige fortes",
+        "95" to "Orage faible ou modéré",
+        "96" to "Orage avec grêle légère",
+        "99" to "Orage avec grêle forte"
+    )
+    return weatherDescriptionMap[code.toString()] ?: "Code inconnu"
+}

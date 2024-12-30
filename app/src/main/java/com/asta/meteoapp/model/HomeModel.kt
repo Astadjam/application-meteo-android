@@ -26,51 +26,65 @@ class HomeModel: ViewModel() {
     fun getWeatherFavoriteList() = this.weatherFavoriteList
 
     fun searchFromInput(input: String, context: Context){
-        if(geocodingRequests === null){
-            geocodingRequests = com.asta.meteoapp.api.geocodingAPI.createRetrofit(context)
-        }
-        if(meteofranceRequests === null){
-            meteofranceRequests = com.asta.meteoapp.api.meteofranceAPI.createRetrofit(context)
-        }
-        weatherList.clear()
-        task?.cancel()
-        task = viewModelScope.launch {
-            delay(300)
-            try {
-                var resultsSearchFromInput = geocodingRequests!!.getLocationData(input)
+        try {
+            if(geocodingRequests === null){
+                geocodingRequests = com.asta.meteoapp.api.geocodingAPI.createRetrofit(context)
+            }
+            if(meteofranceRequests === null){
+                meteofranceRequests = com.asta.meteoapp.api.meteofranceAPI.createRetrofit(context)
+            }
+            weatherList.clear()
+            task?.cancel()
+            task = viewModelScope.launch {
+                delay(300)
+                try {
+                    var resultsSearchFromInput = geocodingRequests!!.getLocationData(input)
 
-                if(resultsSearchFromInput !== null){
-                    var resultWeatherDataList = resultsSearchFromInput.results.mapNotNull {
-                        var weatherData = meteofranceRequests!!.getWeather(it.longitude, it.latitude)?.convertToWeatherData()
+                    if(resultsSearchFromInput !== null){
+                        var resultWeatherDataList = resultsSearchFromInput.results.mapNotNull {
+                            var weatherData = meteofranceRequests!!.getWeather(it.longitude, it.latitude)?.convertToWeatherData()
 
-                        weatherData?.city=it.name
-                        weatherData?.country=it.country
+                            weatherData?.city=it.name
+                            weatherData?.country=it.country
 
-                        weatherData
+                            weatherData
+                        }
+
+                        weatherList.addAll(resultWeatherDataList)
                     }
-
-                    weatherList.addAll(resultWeatherDataList)
+                }catch (e:Exception){
+                    Log.d("Mon erreur", e.toString())
                 }
-            }catch (_:Exception){}
+            }
+
+        }catch (e:Exception){
+            Log.d("Mon erreur", e.toString())
         }
+
     }
 
     fun searchFromGeolocation(longitude: Double, latitude: Double, context: Context){
-        if(meteofranceRequests === null){
-            meteofranceRequests = com.asta.meteoapp.api.meteofranceAPI.createRetrofit(context)
-        }
-        weatherList.clear()
-        task?.cancel()
-        task = viewModelScope.launch {
-            delay(300)
-            try {
-                var weatherData = meteofranceRequests!!.getWeather(longitude, latitude)
-                if(weatherData !== null){
-                    weatherList.add(weatherData.convertToWeatherData())
-                }
-            }catch (e:Exception){
-                Log.d("Hello",e.toString())
+        try {
+            if(meteofranceRequests === null){
+                meteofranceRequests = com.asta.meteoapp.api.meteofranceAPI.createRetrofit(context)
             }
+            weatherList.clear()
+            task?.cancel()
+            task = viewModelScope.launch {
+                delay(300)
+                try {
+                    var weatherData = meteofranceRequests!!.getWeather(longitude, latitude)
+                    if(weatherData !== null){
+                        weatherList.add(weatherData.convertToWeatherData())
+                    }
+                }catch (e:Exception){
+                    Log.d("Mon erreur", "${e.toString()} - ${longitude} ${latitude}")
+                }
+            }
+
+        }catch (e: Exception){
+
+            Log.d("Mon erreur", "${e.toString()} - ${longitude} ${latitude}")
         }
     }
 }
