@@ -19,6 +19,14 @@ data class WeatherData(
     var weatherCode: Int,
     var dbId: Int? = null
     ){
+    companion object{
+        fun fromDatabase(entity: Weather):WeatherData{
+            val weatherData = Json.decodeFromString<WeatherData>(entity.weatherdata)
+            weatherData.dbId = entity.id
+
+            return weatherData
+        }
+    }
     fun forDatabase():String= Json.encodeToString(this)
 }
 

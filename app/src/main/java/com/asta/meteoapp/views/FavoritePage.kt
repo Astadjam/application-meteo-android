@@ -19,6 +19,7 @@ import com.asta.meteoapp.model.FavoriteModel
 @Composable
 fun FavoritePage(modifier: Modifier=Modifier, favoriteModel: FavoriteModel= viewModel()){
     var weatherFavoriteList = favoriteModel.getWeatherFavoriteList()
+    favoriteModel.loadFavorites()
     Column(modifier) {
         Text("Vos favoris")
         LazyColumn {
