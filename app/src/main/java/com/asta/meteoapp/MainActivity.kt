@@ -14,14 +14,25 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
+import androidx.room.Room
+import com.asta.meteoapp.database.Database
 import com.asta.meteoapp.navigation.AppNavigationBar
 import com.asta.meteoapp.navigation.PageList
 import com.asta.meteoapp.ui.theme.MeteoAppTheme
 
 class MainActivity : ComponentActivity() {
+    companion object{
+        lateinit var database: Database
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        database = Room.databaseBuilder(
+            applicationContext,
+            Database::class.java,
+            "weatherdatabase"
+        ).build()
 
         setContent {
             MeteoAppTheme {
@@ -31,7 +42,6 @@ class MainActivity : ComponentActivity() {
                     AppNavigationBar(navHostController= navHostController)
                 }){
                     PageList(navController = navHostController, modifier = Modifier.padding(it))
-
 
                 }
             }
