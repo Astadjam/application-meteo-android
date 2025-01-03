@@ -71,7 +71,7 @@ fun Home(modifier: Modifier=Modifier, homeModel: HomeModel = viewModel(), detail
                 items(items=weatherList){ item ->
                     weatherData(
                         modifier = Modifier.fillMaxWidth().clickable {
-                            detailsModel.weatherData = item
+                            detailsModel.weatherData.value = item
                             onDetailsClick()
                         },
                         weatherData = item

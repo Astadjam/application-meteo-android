@@ -7,7 +7,7 @@ import androidx.room.Query
 @Dao
 interface WeatherRepository {
     @Insert
-    suspend fun addFavorite(weather: Weather)
+    suspend fun addFavorite(weather: Weather):Long
 
     @Query("delete from weather where id = :id")
     suspend fun removeFavorite(id: Int)

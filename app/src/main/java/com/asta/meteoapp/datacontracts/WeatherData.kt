@@ -1,6 +1,12 @@
 package com.asta.meteoapp.datacontracts
 
+import com.asta.meteoapp.database.Weather
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+
 // Data class for weather information
+@Serializable
 data class WeatherData(
     var city: String?,
     var temperature: Double,
@@ -10,7 +16,11 @@ data class WeatherData(
     var minTemperature: Double?,
     var windSpeed: Double,
     var windSpeedUnit: String,
-    var weatherCode: Int)
+    var weatherCode: Int,
+    var dbId: Int? = null
+    ){
+    fun forDatabase():String= Json.encodeToString(this)
+}
 
     /**
      * @return the description from weather code

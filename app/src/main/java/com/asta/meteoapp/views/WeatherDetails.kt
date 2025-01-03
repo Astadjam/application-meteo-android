@@ -19,16 +19,18 @@ import com.asta.meteoapp.model.DetailsModel
 
 @Composable
 fun WeatherDetails(modifier: Modifier=Modifier, detailsModel: DetailsModel= viewModel()){
-    var weatherData = detailsModel.weatherData!!
-    var isFavorite = detailsModel.isFavorite
+    var weatherData = detailsModel.weatherData.value!!
     Column(modifier){
         Row(modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween) {
             Text(text="${weatherData.city ?: "Votre position"} ${weatherData.country ?: ""}" )
             IconButton(onClick = {
-                isFavorite.value = !isFavorite.value
+                if(weatherData.dbId !== null)
+                    detailsModel.removeInFavorites()
+                else
+                    detailsModel.addInFavorites()
             }) {
-                if(!isFavorite.value)
+                if(weatherData.dbId == null)
                     Icon(imageVector = Icons.Filled.Favorite, contentDescription = "")
                 else
                     Icon(imageVector = Icons.Filled.Favorite, contentDescription = "", tint = Color.Red)
