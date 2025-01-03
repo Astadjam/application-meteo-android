@@ -15,11 +15,12 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.asta.meteoapp.components.weatherDataFavorite
 import com.asta.meteoapp.datacontracts.WeatherData
 import com.asta.meteoapp.model.FavoriteModel
+import com.asta.meteoapp.model.HomeModel
 
 @Composable
-fun FavoritePage(modifier: Modifier=Modifier, favoriteModel: FavoriteModel= viewModel()){
+fun FavoritePage(modifier: Modifier=Modifier, favoriteModel: FavoriteModel= viewModel(),homeModel: HomeModel = viewModel()){
     var weatherFavoriteList = favoriteModel.getWeatherFavoriteList()
-    favoriteModel.loadFavorites()
+
     Column(modifier) {
         Text("Vos favoris")
         LazyColumn {
@@ -31,6 +32,8 @@ fun FavoritePage(modifier: Modifier=Modifier, favoriteModel: FavoriteModel= view
                     isInfavorite = value,
                     onClick = {
                         value.value = !value.value
+                        favoriteModel.removeInFavorite(item)
+                        homeModel.refresh.value = true
                     }
                 )
             }

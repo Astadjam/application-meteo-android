@@ -28,11 +28,11 @@ fun PageList(modifier: Modifier=Modifier, navController: NavHostController){
         }
 
         composable(route = "favorite") {
-            FavoritePage(modifier = modifier)
+            FavoritePage(modifier = modifier,homeModel = homeModel)
         }
 
         composable(route = "details") {
-            WeatherDetails(modifier = modifier, detailsModel = detailsModel)
+            WeatherDetails(modifier = modifier, detailsModel = detailsModel,homeModel=homeModel)
         }
     }
 }

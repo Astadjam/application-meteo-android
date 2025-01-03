@@ -35,6 +35,11 @@ fun Home(modifier: Modifier=Modifier, homeModel: HomeModel = viewModel(), detail
     var weatherList = homeModel.getWeatherList()
     var weatherFavoriteList = homeModel.getWeatherFavoriteList()
     var message = homeModel.getMessage()
+
+    if(homeModel.refresh.value){
+        homeModel.loadSomeFavorites()
+        homeModel.refresh.value = false
+    }
     Column(modifier,
             verticalArrangement = Arrangement.spacedBy(20.dp),
             horizontalAlignment = Alignment.CenterHorizontally) {
@@ -91,6 +96,7 @@ fun Home(modifier: Modifier=Modifier, homeModel: HomeModel = viewModel(), detail
                         isInfavorite = value,
                         onClick = {
                             value.value = !value.value
+                            homeModel.removeInFavorite(item)
                         }
                     )
                 }

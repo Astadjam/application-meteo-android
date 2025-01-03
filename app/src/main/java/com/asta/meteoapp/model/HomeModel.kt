@@ -8,6 +8,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.asta.meteoapp.MainActivity
 import com.asta.meteoapp.api.geocodingAPI.GeocodingRequests
 import com.asta.meteoapp.api.meteofranceAPI.MeteofranceRequests
 import com.asta.meteoapp.datacontracts.WeatherData
@@ -23,7 +24,23 @@ class HomeModel: ViewModel() {
     private var geocodingRequests: GeocodingRequests?=null
     private var meteofranceRequests: MeteofranceRequests?=null
     private var message: MutableState<String?> = mutableStateOf(null)
+    val refresh = mutableStateOf(true)
 
+    fun removeInFavorite(weatherData: WeatherData){
+        if(weatherData.dbId !== null){
+            viewModelScope.launch {
+                MainActivity.database.getWeatherRepository().removeFavorite(id= weatherData.dbId!!)
+                weatherFavoriteList.remove(weatherData)
+            }
+        }
+    }
+
+    fun loadSomeFavorites(){
+        viewModelScope.launch{
+            weatherFavoriteList.clear()
+            weatherFavoriteList.addAll(MainActivity.database.getWeatherRepository().loadSome().map { WeatherData.fromDatabase(entity = it) })
+        }
+    }
     fun getInput() = this.input
     fun getWeatherList() = this.weatherList
     fun getWeatherFavoriteList() = this.weatherFavoriteList

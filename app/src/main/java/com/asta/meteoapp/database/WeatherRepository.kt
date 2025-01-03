@@ -14,4 +14,7 @@ interface WeatherRepository {
 
     @Query("select * from weather")
     suspend fun getAllFavorite():List<Weather>
+
+    @Query("select * from weather order by id desc limit 3")
+    suspend fun loadSome():List<Weather>
 }

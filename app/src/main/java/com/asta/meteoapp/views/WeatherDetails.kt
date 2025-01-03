@@ -16,9 +16,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.asta.meteoapp.datacontracts.findDescriptionFromWeatherCode
 import com.asta.meteoapp.model.DetailsModel
+import com.asta.meteoapp.model.HomeModel
 
 @Composable
-fun WeatherDetails(modifier: Modifier=Modifier, detailsModel: DetailsModel= viewModel()){
+fun WeatherDetails(modifier: Modifier=Modifier, detailsModel: DetailsModel= viewModel(),homeModel: HomeModel = viewModel()){
     var weatherData = detailsModel.weatherData.value!!
     Column(modifier){
         Row(modifier = Modifier.fillMaxWidth(),
@@ -29,6 +30,8 @@ fun WeatherDetails(modifier: Modifier=Modifier, detailsModel: DetailsModel= view
                     detailsModel.removeInFavorites()
                 else
                     detailsModel.addInFavorites()
+
+                homeModel.refresh.value = true
             }) {
                 if(weatherData.dbId == null)
                     Icon(imageVector = Icons.Filled.Favorite, contentDescription = "")
