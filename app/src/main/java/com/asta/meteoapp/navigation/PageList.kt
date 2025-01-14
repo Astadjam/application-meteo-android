@@ -28,7 +28,9 @@ fun PageList(modifier: Modifier=Modifier, navController: NavHostController){
         }
 
         composable(route = "favorite") {
-            FavoritePage(modifier = modifier,homeModel = homeModel)
+            FavoritePage(modifier = modifier,homeModel = homeModel, detailsModel = detailsModel, onDetailsClicked = {
+                navController.navigate(route = "details")
+            })
         }
 
         composable(route = "details") {

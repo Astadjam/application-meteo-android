@@ -56,7 +56,6 @@ fun Home(modifier: Modifier=Modifier, homeModel: HomeModel = viewModel(), detail
             modifier = Modifier,
             context = LocalContext.current,
             onLocationGet = {location ->
-                Log.d("Hello", location?.toString() ?: "null")
                 if(location !== null){
                     homeModel.searchFromGeolocation(location.longitude, location.latitude, context)
                 }
@@ -91,7 +90,12 @@ fun Home(modifier: Modifier=Modifier, homeModel: HomeModel = viewModel(), detail
                 items(items=weatherFavoriteList){ item ->
                     var value = remember { mutableStateOf(true) }
                     weatherDataFavorite(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                detailsModel.weatherData.value = item
+                                onDetailsClick()
+                            },
                         weatherData = item,
                         isInfavorite = value,
                         onClick = {

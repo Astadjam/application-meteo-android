@@ -12,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.asta.meteoapp.datacontracts.findDescriptionFromWeatherCode
@@ -21,6 +22,8 @@ import com.asta.meteoapp.model.HomeModel
 @Composable
 fun WeatherDetails(modifier: Modifier=Modifier, detailsModel: DetailsModel= viewModel(),homeModel: HomeModel = viewModel()){
     var weatherData = detailsModel.weatherData.value!!
+    detailsModel.reloadData(context = LocalContext.current)
+
     Column(modifier){
         Row(modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween) {

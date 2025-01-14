@@ -22,7 +22,9 @@ data class MeteofranceData(
         minTemperature = daily.temperature_2m_min[0],
         windSpeed = current.wind_speed_10m,
         windSpeedUnit = current_units.wind_speed_10m,
-        weatherCode = current.weather_code
+        weatherCode = current.weather_code,
+        longitude = longitude,
+        latitude = latitude
     )
 }
 

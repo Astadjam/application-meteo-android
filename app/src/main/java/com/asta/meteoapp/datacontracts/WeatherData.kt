@@ -17,7 +17,9 @@ data class WeatherData(
     var windSpeed: Double,
     var windSpeedUnit: String,
     var weatherCode: Int,
-    var dbId: Int? = null
+    var dbId: Int? = null,
+    var longitude: Double = 0.0,
+    var latitude: Double = 0.0
     ){
     companion object{
         fun fromDatabase(entity: Weather):WeatherData{

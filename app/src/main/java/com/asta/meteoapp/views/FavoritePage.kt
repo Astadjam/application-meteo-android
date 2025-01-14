@@ -1,5 +1,6 @@
 package com.asta.meteoapp.views
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
@@ -14,11 +15,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.asta.meteoapp.components.weatherDataFavorite
 import com.asta.meteoapp.datacontracts.WeatherData
+import com.asta.meteoapp.model.DetailsModel
 import com.asta.meteoapp.model.FavoriteModel
 import com.asta.meteoapp.model.HomeModel
 
 @Composable
-fun FavoritePage(modifier: Modifier=Modifier, favoriteModel: FavoriteModel= viewModel(),homeModel: HomeModel = viewModel()){
+fun FavoritePage(modifier: Modifier=Modifier, favoriteModel: FavoriteModel= viewModel(),homeModel: HomeModel = viewModel(),detailsModel: DetailsModel = viewModel(),onDetailsClicked: () -> Unit = {}){
     var weatherFavoriteList = favoriteModel.getWeatherFavoriteList()
 
     Column(modifier) {
@@ -27,7 +29,12 @@ fun FavoritePage(modifier: Modifier=Modifier, favoriteModel: FavoriteModel= view
             items(items=weatherFavoriteList){ item ->
                 var value = remember { mutableStateOf(true) }
                 weatherDataFavorite(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable {
+                            detailsModel.weatherData.value = item
+                            onDetailsClicked()
+                        },
                     weatherData = item,
                     isInfavorite = value,
                     onClick = {
